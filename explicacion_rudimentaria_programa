@@ -1,0 +1,12 @@
+1.1) 
+Se lanza el padre
+Forkea al hijo
+Loop 5{
+	Padre escribe "sup!" y envía señal a hijo
+	Hijo escribe "ya va!"
+}
+Hijo envía señal a padre esperar
+Hijo lanza el proceso enviado por parametro
+Exitea el hijo -> Exitea el padre
+
+Si, utilizan señales como mecanismo de IPC. Se usan para coordinar y que escriban en orden "sup!" y "ya va!"
