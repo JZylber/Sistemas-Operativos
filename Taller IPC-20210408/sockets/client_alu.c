@@ -37,9 +37,14 @@ int main(int argc, char **argv){
 	name.sin_port = htons(PORT);
 
 	//COMPLETAR: conectar el socket
-
+	if(connect(s,&name,4) != 0){
+		perror("connection error");
+		exit(1);
+	}
 
 	//COMPLETAR: Recibir mensaje de bienvenida y ponerlo en bufrecv
+
+	recv(s, &bufrecv, MSGLEN, 0);
 
 	printf("Bienvenida: %s\n",bufrecv);
 
@@ -57,7 +62,14 @@ int main(int argc, char **argv){
 		}
 		//COMPLETAR: Enviar el mensaje
 
-		//COMPLETAR: ecibir mensajes hasta que envie  CMDSE
+		send(s, &bufsend, &bufsendsiz,0);
+
+		//COMPLETAR: escribir mensajes hasta que envie  CMDSE
+		while(recv(s, &bufrecv, MSGLEN,0)){
+			if(bufrecv == CMDSEP){break;}
+			write(stdout,&bufrecv,MSGLEN);
+		}
+		
 	}
 
 	free(bufsend);
