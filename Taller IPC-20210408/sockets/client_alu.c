@@ -37,15 +37,15 @@ int main(int argc, char **argv){
 	name.sin_port = htons(PORT);
 
 	//COMPLETAR: conectar el socket
-	if(connect(s,&name,4) != 0){
+	if(connect(s,(struct sockaddr *)&name,sizeof(struct sockaddr_in)) != 0){
 		perror("connection error");
 		exit(1);
 	}
 
 	//COMPLETAR: Recibir mensaje de bienvenida y ponerlo en bufrecv
 
-	recv(s, &bufrecv, MSGLEN, 0);
-
+	ssize_t bytes_read = recv(s, bufrecv, MSGLEN, 0);
+	bufrecv[bytes_read] = '\0';
 	printf("Bienvenida: %s\n",bufrecv);
 
 	for (;;) {
@@ -62,14 +62,22 @@ int main(int argc, char **argv){
 		}
 		//COMPLETAR: Enviar el mensaje
 
-		send(s, &bufsend, &bufsendsiz,0);
-
-		//COMPLETAR: escribir mensajes hasta que envie  CMDSE
-		while(recv(s, &bufrecv, MSGLEN,0)){
-			if(bufrecv == CMDSEP){break;}
-			write(stdout,&bufrecv,MSGLEN);
+		ssize_t bytes_sent = send(s, bufsend, w,0);
+		if (bytes_sent < 0)
+		{
+			perror("sending mistake");
 		}
 		
+
+
+		//COMPLETAR: escribir mensajes hasta que envie CMDSEP
+		while(1)
+		{
+			bytes_read = recv(s, bufrecv, MSGLEN*1024,0);
+			bufrecv[bytes_read] = '\0';
+			if(strstr(bufrecv,CMDSEP)){break;}
+			printf("%s",bufrecv);
+		}
 	}
 
 	free(bufsend);
