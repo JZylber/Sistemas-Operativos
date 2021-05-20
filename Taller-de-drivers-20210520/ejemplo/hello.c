@@ -3,30 +3,30 @@
 #include <linux/kernel.h>
 #include <linux/cdev.h>
 #include <linux/device.h>
+#include <linux/fs.h>
 
-static cdev miDispositivo;
-static file_operations misOperaciones;
-dev_t major;
+static struct cdev miDispositivo;
+static dev_t major;
 char * nombre = "nulo";
 static struct class *mi_class;
 
-static struct file_operations mis_operaciones = { .owner = THIS_MODULE,
-        .read = mi_operacion_lectura,
-        .write = mi_operacion_escritura
-};
-
 ssize_t mi_operacion_lectura(struct file *filp, char __user *data, size_t s, loff_t *off) {
-return NULL;
+return 0;
 }
 
 ssize_t mi_operacion_escritura(struct file *filp, const char __user *data, size_t s, loff_t *off) {
 return s;
 }
 
+static struct file_operations mis_operaciones = { .owner = THIS_MODULE,
+        .read = mi_operacion_lectura,
+        .write = mi_operacion_escritura
+};
+
 static int __init hello_init(void) {
-    cdev_init(*miDispositivo, *file_operations);
-    alloc_chrdev_region(*major, 0, 1, nombre);
-    cdev_add(*miDispositivo, major, 1);
+    cdev_init(&miDispositivo, &mis_operaciones);
+    alloc_chrdev_region(&major, 0, 1, nombre);
+    cdev_add(&miDispositivo, major, 1);
     mi_class = class_create(THIS_MODULE, nombre);
     device_create(mi_class, NULL, major, NULL, nombre);
     printk(KERN_ALERT "Hola, Sistemas Operativos!\n");
@@ -35,7 +35,7 @@ static int __init hello_init(void) {
 
 static void __exit hello_exit(void) {
     unregister_chrdev_region(major, 1);
-    cdev_del(*miDispositivo);
+    cdev_del(&miDispositivo);
     device_destroy(mi_class, major);
     class_destroy(mi_class);
     printk(KERN_ALERT "Adios, mundo cruel...\n");
