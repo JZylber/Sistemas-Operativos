@@ -1,0 +1,7 @@
+== Verificando /dev/nulo ==
+* Abriendo dispositivo
+* Intentando lectura
+* Cerrando dispositivo
+== Verificando /dev/azar ==
+* Abriendo dispositivo
+* Configurando limite en 256

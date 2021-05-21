@@ -1,4 +1,5 @@
-obj-m := hello.o
+#obj-m := hello.o
+obj-m := azar.o
 KVERSION := $(shell uname -r)
 
 all:
