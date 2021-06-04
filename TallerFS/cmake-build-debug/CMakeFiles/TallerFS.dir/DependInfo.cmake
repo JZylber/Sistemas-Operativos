@@ -4,9 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/nico/Documents/so/taller/talleres/Sistemas-Operativos/TallerFS/main.cpp" "/Users/nico/Documents/so/taller/talleres/Sistemas-Operativos/TallerFS/cmake-build-debug/CMakeFiles/TallerFS.dir/main.cpp.o"
+  "/home/julian/Documents/Computación/Sistemas Operativos/Repo/TallerFS/main.cpp" "/home/julian/Documents/Computación/Sistemas Operativos/Repo/TallerFS/cmake-build-debug/CMakeFiles/TallerFS.dir/main.cpp.o"
   )
-set(CMAKE_CXX_COMPILER_ID "AppleClang")
+set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH

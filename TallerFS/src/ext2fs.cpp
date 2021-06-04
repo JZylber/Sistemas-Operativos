@@ -276,17 +276,67 @@ unsigned int Ext2FS::blockaddr2sector(unsigned int block)
 /**
  * Warning: This method allocates memory that must be freed by the caller
  */
+
 struct Ext2FSInode * Ext2FS::load_inode(unsigned int inode_number)
 {
 	//TODO: Ejercicio 2
-
+	unsigned int inodeSize = sizeof(Ext2FSInode);
+    unsigned int block_size = 1024 << _superblock->log_block_size;
+    unsigned int inodes_per_block = block_size / inodeSize;
+	unsigned char* buffer = (unsigned char* )malloc(block_size);
+    unsigned int iBlockgroup = Ext2FS::blockgroup_for_inode(inode_number);
+    Ext2FSBlockGroupDescriptor * group_desc = Ext2FS::block_group(iBlockgroup);
+    unsigned int iBlockgroupIndex = Ext2FS::blockgroup_inode_index(inode_number);
+    read_block(group_desc->inode_table + (iBlockgroupIndex/inodes_per_block),buffer);
+    unsigned char * inode_buffer = (unsigned char* )malloc(inodeSize);
+    unsigned int starting_index = (iBlockgroupIndex % inodes_per_block)*inodeSize;
+    for(int i = 0;i < inodeSize; i++){
+        inode_buffer[i] = buffer[starting_index + i];
+    }
+    free(buffer);
+	return (Ext2FSInode *) inode_buffer;
 }
 
 unsigned int Ext2FS::get_block_address(struct Ext2FSInode * inode, unsigned int block_number)
 {
-
-	//TODO: Ejercicio 1
-
+    //TODO: Ejercicio 1
+    std::cout <<"Directo" << std::endl;
+    if(block_number < 12){
+        for(int i = 0; i < 12 ; i ++){
+            std::cout << inode->block[i] << std::endl;
+        }
+        std::cout << block_number << std::endl;
+        return inode->block[block_number];
+    }
+    std::cout <<"Indirecto"<< std::endl;
+    unsigned int block_size = 1024 << _superblock->log_block_size;
+    unsigned char* buffer = (unsigned char* )malloc(block_size);
+    block_number -= 12;
+    unsigned int entries_per_block = block_size / sizeof(unsigned int);
+    if(block_number < entries_per_block){
+        read_block(inode->block[12],buffer);
+        unsigned int * addresses = (unsigned int *)buffer;
+        return addresses[block_number];
+    }
+    std::cout << "Doble indirecto" << std::endl;
+    block_number -= entries_per_block;
+    unsigned int two_indirect_entries = entries_per_block^2;
+    if(block_number < two_indirect_entries){
+        read_block(inode->block[13],buffer);
+        unsigned int * addresses = (unsigned int *)buffer;
+        read_block(addresses[block_number / entries_per_block],buffer);
+        addresses = (unsigned int *)buffer;
+        return addresses[(block_number % entries_per_block)];
+    }
+    //block_number -= two_indirect_entries;
+    /*read_block(inode->block[14],buffer); //3era indireccion
+    unsigned int * addresses = (unsigned int *)buffer;
+    read_block(addresses[block_number/ two_indirect_entries],buffer); //2era indireccion
+    addresses = (unsigned int *)buffer;
+    read_block(addresses[(block_number % two_indirect_entries)/entries_per_block],buffer); //1da indireccion
+    addresses = (unsigned int *)buffer;
+    return addresses[(block_number % entries_per_block)];
+*/
 }
 
 void Ext2FS::read_block(unsigned int block_address, unsigned char * buffer)

@@ -13,7 +13,6 @@ MBR::MBR(const unsigned char * data):raw_data(data)
 const PartitionEntry & MBR::operator[](unsigned int partition_index) const
 {
 	assert(partition_index <= 3);
-
 	return * (new PartitionEntry(this->raw_data + (BOOTCODE_SIZE + partition_index * PENTRY_SIZE)));
 }
 

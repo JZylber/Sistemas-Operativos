@@ -1,3 +1,3 @@
-/Users/nico/Documents/so/taller/talleres/Sistemas-Operativos/TallerFS/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/nico/Documents/so/taller/talleres/Sistemas-Operativos/TallerFS/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/nico/Documents/so/taller/talleres/Sistemas-Operativos/TallerFS/cmake-build-debug/CMakeFiles/TallerFS.dir
+/home/julian/Documents/Computación/Sistemas Operativos/Repo/TallerFS/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/julian/Documents/Computación/Sistemas Operativos/Repo/TallerFS/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/julian/Documents/Computación/Sistemas Operativos/Repo/TallerFS/cmake-build-debug/CMakeFiles/TallerFS.dir
