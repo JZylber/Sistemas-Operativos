@@ -65,6 +65,7 @@ void test_get_block_address(Ext2FS * fs){
 }
 
 void test_get_file_inode_from_dir_inode(Ext2FS * fs){
+    cout << "=== Test Get File From Inode ===" << endl;
     unsigned char caracteres[9];
 	fd_t fileDesc = fs->open("/grupos/g1/nota.txt", "cualquiera");
 	fs->seek(fileDesc,13999);

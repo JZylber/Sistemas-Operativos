@@ -302,10 +302,6 @@ unsigned int Ext2FS::get_block_address(struct Ext2FSInode * inode, unsigned int 
     //TODO: Ejercicio 1
     std::cout <<"Directo" << std::endl;
     if(block_number < 12){
-        for(int i = 0; i < 12 ; i ++){
-            std::cout << inode->block[i] << std::endl;
-        }
-        std::cout << block_number << std::endl;
         return inode->block[block_number];
     }
     std::cout <<"Indirecto"<< std::endl;
